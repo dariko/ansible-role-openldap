@@ -1,0 +1,55 @@
+#-   name: ltb repository file
+    #copy:
+        #content: |
+            
+        #dest: /etc/apt/sources.list.d/ltb.list
+        #owner: root
+        #group: root
+        #mode: 0644
+
+#-   name: ltb repository key
+    #apt_key:
+        
+-   name: packages directory
+    file:
+        path: "{{openldap_packages_path}}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+-   name: download debs archive
+    get_url:
+        url: "{{openldap_package_item}}"
+        dest: "{{openldap_packages_path}}/"
+        force: no
+    loop_control:
+        loop_var: openldap_package_item
+    with_items:
+    -   "http://ltb-project.org/archives/berkeleydb-ltb-4.6.21-lenny-64.tar.gz"
+    -   "http://ltb-project.org/archives/openldap-ltb-{{openldap_version}}-jessie-64.tar.gz"
+    
+-   name: unarchive packages
+    unarchive:
+        remote_src: yes
+        src: "{{openldap_packages_path}}/{{openldap_package_item.src}}"
+        dest: "{{openldap_packages_path}}/"
+        creates: "{{openldap_package_item.creates}}"
+    loop_control:
+        loop_var: openldap_package_item
+    with_items:
+    -   src: "openldap-ltb-{{openldap_version}}-jessie-64.tar.gz"
+        creates: "{{openldap_packages_path}}/openldap-ltb_{{openldap_version}}.1_amd64.deb"
+    -   src: "berkeleydb-ltb-4.6.21-lenny-64.tar.gz"
+        creates: "{{openldap_packages_path}}/berkeleydb-ltb_4.6.21.NC-4-patch4_amd64.deb"
+-   name: install packages
+    apt:
+        deb: "{{openldap_packages_path}}/{{openldap_package_item}}"
+    loop_control:
+        loop_var: openldap_package_item
+    with_items:
+    -   "berkeleydb-ltb_4.6.21.NC-4-patch4_amd64.deb"
+    -   "openldap-ltb_{{openldap_version}}.1_amd64.deb"
+    -   "openldap-ltb-contrib-overlays_{{openldap_version}}.1_amd64.deb"
+    -   "openldap-ltb-check-password_{{openldap_version}}.1_amd64.deb"
+    -   "openldap-ltb-mdb-utils_{{openldap_version}}.1_amd64.deb"

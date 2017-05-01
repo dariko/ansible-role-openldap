@@ -1,0 +1,2 @@
+openldap_packages_path: "/opt/openldap/packages"
+openldap_version: "2.4.44"
