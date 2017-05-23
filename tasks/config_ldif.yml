@@ -1,0 +1,21 @@
+-   name: openldap directories
+    file:
+        path: "{{item}}"
+        state: directory
+        owner: ldap
+        group: ldap
+        mode: 0750
+    with_items: "{{openldap_data_directories + [openldap_config_directory]}}"
+
+-   name: get remote configuration
+    command: |
+        /usr/local/openldap/sbin/slapcat \
+            -o ldif-wrap=no \
+            -F /usr/local/openldap/etc/openldap/slapd.d/ \
+            -n0
+    register: out_openldap_remote_config_dump
+    changed_when: false
+
+-   name: apply configuration
+    include: config_ldif_apply.yml
+    when: out_openldap_remote_config_dump.stdout != openldap_config_ldif

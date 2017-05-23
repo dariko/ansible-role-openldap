@@ -1,1 +1,7 @@
 openldap_version: "2.4.44"
+openldap_slapd_services: "ldap://*:389"
+openldap_data_directories:
+-   /usr/local/openldap/var/openldap-data
+openldap_config_directory: /usr/local/openldap/etc/openldap/slapd.d
+openldap_start: false
+openldap_initialize: false

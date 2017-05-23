@@ -1,8 +1,0 @@
-#-   name: configure /etc/default/slapd
-    #lineinfile:
-        #line:
-        #regexp:
-        #path: /etc/default/slapd
-    #with_items:
-    #-   line:
-        #regexp:
