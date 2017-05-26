@@ -36,8 +36,19 @@
         regexp: "^ *SLAPD_SERVICES"
     notify: restart openldap
 
+-   name: test for openldap_apply_config_once_lockfile
+    stat:
+        path: openldap_apply_config_once_lockfile
+
 -   include: config_ldif.yml
-    when: "'openldap_config_ldif' in vars"
+    when: |
+        'openldap_config_ldif' in vars
+        and not
+        ( 
+            openldap_apply_config_once
+            and
+            not openldap_apply_config_once_lockfile.stat.exists
+        )
 
 -   name: start slapd
     service:

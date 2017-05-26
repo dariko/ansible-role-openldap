@@ -5,3 +5,5 @@ openldap_data_directories:
 openldap_config_directory: /usr/local/openldap/etc/openldap/slapd.d
 openldap_start: false
 openldap_initialize: false
+openldap_apply_config_once: true
+openldap_apply_config_once_lockfile: "/opt/ansible-openldap-configured"
