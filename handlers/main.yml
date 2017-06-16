@@ -1,4 +1,4 @@
 -   name: restart openldap
     service:
-        name: openldap
-        state: started
+        name: slapd
+        state: restarted
