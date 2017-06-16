@@ -29,5 +29,5 @@
         /usr/local/openldap/sbin/slapadd \
             -F /usr/local/openldap/etc/openldap/slapd.d/ \
             -l /usr/local/openldap/etc/openldap/openldap.ldif \
-            -n0;
+            -n0 && \
         chown -R ldap:ldap /usr/local/openldap/etc/openldap/slapd.d
